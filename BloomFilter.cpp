@@ -8,9 +8,12 @@
 #include "BloomFilter.h"
 using namespace std;
 
+ofstream Indices;
+
 void Filter_Initialize()
 {
     B_Filter.reset();
+    Indices.open(Backup_file, std::ios_base::app | std::ios_base::out);
 }
 
 /* murmurHash3 can be used instead of this function, Library available in Python and not available in C or C++. Already implemented hash function is available though.*/
@@ -56,6 +59,7 @@ void Filter_Add(string short_url, int url_length)
         uint64_t HashVal = Str_Hash(short_url, url_length);
         uint64_t index = K_hash(i, HashVal);
         B_Filter.set(index);
+        Indices<<index<<endl;
     }
 }
 
@@ -67,6 +71,7 @@ bool Filter_Test(string short_url, int url_length)
     {
         uint64_t HashVal = Str_Hash(short_url, url_length);
         uint64_t index = K_hash(i, HashVal);
+   
         if(!B_Filter.test(index))
         {
             flag = false;
@@ -74,4 +79,16 @@ bool Filter_Test(string short_url, int url_length)
         }
     }
     return flag;
+}
+
+void LoadIndices()
+{
+    ifstream infile ;
+    infile.open(Backup_file, std::ios_base::in);
+    
+    long long index;
+    while(infile>>index)
+    {
+        B_Filter.set(index);
+    }
 }

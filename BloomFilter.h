@@ -14,7 +14,9 @@
 #include <string>
 #include <cmath>
 #include <ctype.h>
+#include <fstream>
 
+#define Backup_file "Filter_Backup.txt"
 #define M 1559100
 #define K 4
 
