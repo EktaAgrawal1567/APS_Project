@@ -11,9 +11,9 @@
 #include <utility>
 #include <vector>
 #include <algorithm>
-#include <string>
+#include "BloomFilter.cpp"
 
-#define LEN 6
+#define LEN 3
 
 using namespace std;
 
@@ -50,18 +50,35 @@ string Shorten_url(string long_url)
 
 int main(int argc, const char * argv[])
 {
+    Filter_Initialize();
+    
     while(1)
     {
         string long_url, exit_flag;
         cout<<"Enter URL need to be shortened: "<<endl;
         cin>>long_url;
         
-        string short_url = Shorten_url(long_url);
-        cout<<short_url<<endl;
+        bool filter_flag = true;
         
-        /* Add here: Check if shorten URL is already present in URL_DB using bloom filter
-         If not, repeatedly generate short_url and check until it is unique */
-        URL_DB.push_back(make_pair(short_url, long_url));
+        while(filter_flag)
+        {
+            string short_url = Shorten_url(long_url);
+            cout<<short_url<<endl;
+            Filter_Add(short_url, short_url.length());
+            
+            filter_flag = Filter_Test(short_url, short_url.length());
+            if(filter_flag)
+            {
+                cout<<"Shorten URL is unique."<<endl;
+                URL_DB.push_back(make_pair(short_url, long_url));
+                break;
+            }
+            else
+            {
+                cout<<"Shorten URL is not unique. Generating again."<<endl;
+            }
+        }
+        
         
         cout<<"Continue? (Yes/No)"<<endl;
         cin>>exit_flag;

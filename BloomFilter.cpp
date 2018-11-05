@@ -5,24 +5,12 @@
 //  Created by Pranjali Ingole on 30/10/18.
 //  Copyright © 2018 Pranjali Ingole. All rights reserved.
 //
-
-#include <stdio.h>
-#include <bitset>
-#include <string>
-#include <cmath>
-#include <ctype.h>
-
-/*  Add code to calculte it from acceptable false positive probability (P) and fixed length of short_url (LEN). Value of M and K is hardcoded temporarily for P = 1% and LEN = 3 */
-#define M 1559100
-#define K 4
-
+#include "BloomFilter.h"
 using namespace std;
 
-bitset<M> BloomFilter;
-
-void Initialize()
+void Filter_Initialize()
 {
-    BloomFilter.reset();
+    B_Filter.reset();
 }
 
 /* murmurHash3 can be used instead of this function, Library available in Python and not available in C or C++. Already implemented hash function is available though.*/
@@ -58,20 +46,20 @@ uint64_t K_hash(int i, uint64_t HashVal)
     Hash2 = HashVal * 0xFFFF;
     Hash1 = (HashVal >> 32) * 0xFFFF;
     
-    return (Hash1 + (i * Hash2));
+    return (Hash1 + (i * Hash2))%M;
 }
 
-void Add(string short_url, int url_length)
+void Filter_Add(string short_url, int url_length)
 {
     for(int i=0; i<K; i++)
     {
         uint64_t HashVal = Str_Hash(short_url, url_length);
         uint64_t index = K_hash(i, HashVal);
-        BloomFilter.set(index);
+        B_Filter.set(index);
     }
 }
 
-bool test(string short_url, int url_length)
+bool Filter_Test(string short_url, int url_length)
 {
     bool flag = true;
     
@@ -79,7 +67,7 @@ bool test(string short_url, int url_length)
     {
         uint64_t HashVal = Str_Hash(short_url, url_length);
         uint64_t index = K_hash(i, HashVal);
-        if(!BloomFilter.test(index))
+        if(!B_Filter.test(index))
         {
             flag = false;
             break;
