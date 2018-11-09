@@ -1,11 +1,3 @@
-//
-//  main.cpp
-//  Bloom_Filter
-//
-//  Created by Pranjali Ingole on 29/10/18.
-//  Copyright © 2018 Pranjali Ingole. All rights reserved.
-//
-
 #include <iostream>
 #include <stdlib.h>
 #include <utility>
@@ -14,12 +6,11 @@
 #include <algorithm>
 #include "BloomFilter.cpp"
 
+#define DBFILE "URL_DB.txt"
 #define LEN 3
 
 using namespace std;
 
-/* Vector of pairs of two strings (Long_URL and Short_URL) */
-vector < pair <string, string> > URL_DB;
 ofstream DBfile;
 
 /* unorder_set of long_url to ensure no duplicate long_urls are accepted i.e. Same long url will not be mapped to different multiple shorten_urls. */
@@ -56,24 +47,25 @@ string Shorten_url(string long_url)
 void LoadDBfile(string filename)
 {
     ifstream infile ;
-    infile.open("URL_DB.txt", std::ios_base::in);
-    
+    infile.open(filename, std::ios_base::in);
     
     string long_url, short_url;
     while(infile>>long_url>>short_url)
     {
-        URL_DB.push_back(make_pair(short_url, long_url));
+        Filter_Add(short_url, short_url.length());
         Long_URL_list.insert(long_url);
     }
+    
+    infile.close();
 }
 
 int main(int argc, const char * argv[])
 {
     Filter_Initialize();
-    LoadIndices();
-    LoadDBfile("URL_DB.txt");
+    LoadDBfile(DBFILE);
     
-    DBfile.open("URL_DB.txt", std::ios_base::app | std::ios_base::out);
+    DBfile.open(DBFILE, std::ios_base::app | std::ios_base::out);
+    DBfile<<endl;
     
     while(1)
     {
@@ -101,7 +93,6 @@ int main(int argc, const char * argv[])
             if(!filter_flag)
             {
                 cout<<"Shorten URL is unique."<<endl;
-                URL_DB.push_back(make_pair(short_url, long_url));
                 Filter_Add(short_url, short_url.length());
                 DBfile<<long_url<<" "<<short_url<<endl;
                 break;
@@ -112,7 +103,6 @@ int main(int argc, const char * argv[])
             }
             
         }while(filter_flag);
-        
         
         cout<<"Continue? (Yes/No)"<<endl;
         cin>>exit_flag;

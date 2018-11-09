@@ -4,7 +4,6 @@
 //
 //  Created by Pranjali Ingole on 04/11/18.
 //  Copyright © 2018 Pranjali Ingole. All rights reserved.
-//
 
 #ifndef BloomFilter_h
 #define BloomFilter_h
@@ -16,11 +15,11 @@
 #include <ctype.h>
 #include <fstream>
 
-#define Backup_file "Filter_Backup.txt"
 #define M 1559100
 #define K 4
 
 using namespace std;
+
 bitset<M> B_Filter;
 
 void Filter_Initialize();
