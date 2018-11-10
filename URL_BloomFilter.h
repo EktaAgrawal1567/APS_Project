@@ -1,9 +1,3 @@
-//
-//  BloomFilter.h
-//  Bloom_Filter
-//
-//  Created by Pranjali Ingole on 04/11/18.
-//  Copyright © 2018 Pranjali Ingole. All rights reserved.
 
 #ifndef BloomFilter_h
 #define BloomFilter_h
