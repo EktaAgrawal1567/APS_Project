@@ -15,7 +15,7 @@
 #include <ctype.h>
 #include <fstream>
 
-#define M 1559100
+#define M 800000
 #define K 4
 
 using namespace std;
