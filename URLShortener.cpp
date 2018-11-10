@@ -4,7 +4,7 @@
 #include <vector>
 #include <unordered_set>
 #include <algorithm>
-#include "BloomFilter.cpp"
+#include "URL_BloomFilter.cpp"
 
 #define DBFILE "URL_DB.txt"
 #define LEN 3
