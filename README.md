@@ -50,7 +50,7 @@ Applications implemented :
       3. Calculation of parameters:
             For LEN = 3, N = 238,328 
             Assuming P=1% and using formulae of Bloom Filter, 
-            M = 791709 = 800000 approx. and K = 3.3 = 4 approx.
+            M = 791709 = 800000 approx. and K = 2.3 = 3 approx.
     
    URL Shortener Functions:
    
