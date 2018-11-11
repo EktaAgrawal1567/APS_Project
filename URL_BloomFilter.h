@@ -10,7 +10,7 @@
 #include <fstream>
 
 #define M 800000
-#define K 4
+#define K 3
 
 using namespace std;
 
